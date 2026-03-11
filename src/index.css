@@ -31,25 +31,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
-}
-
-.steampunk-interface {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 1100px;
-  background-image: url('background2.png');
-  background-size: contain;
-  background-repeat: no-repeat;
+  background-color: #3d1f0e; 
+  background-image: url('background.png');
+  background-size: cover;
   background-position: center;
 }
+
+
 
 /* Book Triggers (Left) */
 .book-trigger {
   position: absolute;
   cursor: pointer;
-  margin-left:45px;
+  margin-left:10px;
   transition: transform 0.3s ease, background 0.3s ease;
   border-radius: 5px;
 }
@@ -57,9 +51,7 @@ body {
 .book-1{
   margin-top:20px;
 }
-.book-3{
-  margin-top:-20px;
-}
+
 .book-trigger:hover {
   transform: scale(1.02) translateX(5px);
   background:transparent;
@@ -72,24 +64,24 @@ body {
 /* Top Screen Area (Quick Settings) */
 .top-screen-area {
   position: absolute;
-  top: 1%;
+  top:1%;
   left: 21%;
   width: 57%;
-  height: 23%;
-  padding: 20px;
+  height: 30%;
+  padding: 20px 20px 10px 20px;
   overflow-y: auto;
   color: #3d2b1f;
   font-family: var(--font-mono);
-  background: rgba(0, 0, 0, 0.05);
+
 }
 
 /* Central Dial Area */
 .central-dial-area {
   position: absolute;
-  top: 30%;
-  left: 40%;
+  top: 32%;
+  left: 39.3%;
   width: 18.4%;
-  height: 30%;
+  height: 32%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,20 +101,19 @@ body {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: -40px;
-  margin-left: 14px;
-
+  margin-top: -45px;
+  margin-left: 20px;
   color: white;
 }
 
 /* Bottom Log Area */
 .bottom-log-area {
   position: absolute;
-  top: 70.5%;
+  top: 76%;
   left: 28.5%;
   width: 46%;
   height: 24.5%;
-  padding: 20px 30px;
+  padding: 20px 50px 20px 30px;
   overflow-y: auto;
   color: #2a1b0e;
   font-family: var(--font-serif);
@@ -132,9 +123,9 @@ body {
 /* Failure Mode Buttons (Right) */
 .fm-buttons-container {
   position: absolute;
-  top: 27%;
+  top: 28.9%;
   right: 2%;
-  width: 15.5%;
+  width: 13.5%;
   height: 68%;
   display: flex;
   flex-direction: column;
@@ -142,16 +133,16 @@ body {
 }
 
 .fm-btn-overlay {
-  height: 15.3%;
+  height: 16%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 0 12px;
   color: #fff;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.70rem;
   text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-
+  line-height: 1.1;
 }
 
 .fm-btn-score {
@@ -196,10 +187,10 @@ body {
 
 .form-label {
   display: block;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   margin-bottom: 5px;
-  text-transform: uppercase;
+
 }
 
 .form-select {

@@ -113,24 +113,37 @@ export default function App() {
         {/* Top Screen Area (Quick Settings) */}
         <div className="top-screen-area">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-white text-[20px]">Control Console</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-white text-[20px] ">Control Console</span>
             <button onClick={resetDefaults} className="text-xs text-white hover:text-blue-500 transition-colors flex items-center gap-1">
               <RotateCcw size={10} /> RESET
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-5 text-[15px] text-white">
-            <div className="p-1  ">
-              Temp: <span className="text">{selected.nozzle_temperature}</span>
-            </div>
-            <div className=" p-1 ">
-              SPEED: <span className="text">{selected.print_speed}</span>
-            </div>
-            <div className="p-1 ">
-              MATERIAL: <span className="text">{selected.filament_type}</span>
-            </div>
-            <div className=" p-1 ">
-               STATUS: NOMINAL
-            </div>
+          <div className="grid grid-cols-3 gap-x-5 gap-y-5 text-[15px] text-white">
+            {[
+              { id: "nozzle_temperature", label: "Temp" },
+              { id: "print_speed", label: "SPEED" },
+              { id: "filament_type", label: "MATERIAL" },
+              { id: "humidity", label: "HUMIDITY" },
+              { id: "dust", label: "DUST" },
+              { id: "supports", label: "SUPPORT" }
+            ].map(({ id, label }) => {
+              const v = varById.get(id);
+              return (
+                <div key={id} className="p-1 flex flex-col">
+                  <span className="text-[15px] opacity-90 uppercase font-bold">{label}</span>
+                  <select
+                    className="bg-transparent border-none text-white focus:outline-none cursor-pointer text-[13px] font-mono w-full"
+                    style={{ borderBottom: '1px solid rgba(255,255,255,0.2)' }}
+                    value={selected[id]}
+                    onChange={(e) => setSelected(prev => ({ ...prev, [id]: e.target.value }))}
+                  >
+                    {v?.options.map(opt => (
+                      <option key={opt.label} value={opt.label} className="text-black">{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -230,8 +243,8 @@ export default function App() {
         <div className="fm-buttons-container">
           {FAILURE_MODES.map((fm, i) => (
             <div key={fm} className="fm-btn-overlay flicker" style={{ animationDelay: `${i * 0.3}s` }}>
-              <span className="truncate">{fm}</span>
-              <span className="fm-btn-score">{perFailureMode[i].toFixed(1)}</span>
+              <span className="flex-1 leading-tight mr-2">{fm}</span>
+              <span className="fm-btn-score shrink-0">{perFailureMode[i].toFixed(1)}</span>
             </div>
           ))}
         </div>
