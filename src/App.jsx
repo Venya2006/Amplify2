@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useMemo, useState, useEffect } from "react";
+import { motion, AnimatePresence, useSpring, useTransform } from "motion/react";
 import { RotateCcw, X, Info } from "lucide-react";
 import { VARIABLES, FAILURE_MODES, computeScores } from "./riskModel";
 
@@ -74,6 +74,28 @@ export default function App() {
   const [activeGroupKey, setActiveGroupKey] = useState(null);
   const { perFailureMode, total } = useMemo(() => computeScores(selected), [selected]);
 
+  // Smoothly animated total value
+  const springTotal = useSpring(total, {
+    stiffness: 60,
+    damping: 20,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    springTotal.set(total);
+  }, [total, springTotal]);
+
+  // Manually calculate needle coordinates to bypass rotation logic
+  const needleX2 = useTransform(springTotal, (val) => {
+    const angle = (val / 10) * 220 - 110;
+    return 100 + 65 * Math.sin((angle * Math.PI) / 180);
+  });
+
+  const needleY2 = useTransform(springTotal, (val) => {
+    const angle = (val / 10) * 220 - 110;
+    return 100 - 65 * Math.cos((angle * Math.PI) / 180);
+  });
+
   const varById = useMemo(() => {
     const m = new Map();
     for (const v of VARIABLES) m.set(v.id, v);
@@ -113,12 +135,12 @@ export default function App() {
         {/* Top Screen Area (Quick Settings) */}
         <div className="top-screen-area">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-white text-[20px] ">Control Console</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-white text-[20px]">Control Console</span>
             <button onClick={resetDefaults} className="text-xs text-white hover:text-blue-500 transition-colors flex items-center gap-1">
               <RotateCcw size={10} /> RESET
             </button>
           </div>
-          <div className="grid grid-cols-3 gap-x-5 gap-y-5 text-[15px] text-white">
+          <div className="grid grid-cols-3 gap-x-5 gap-y-2 text-[15px] text-white">
             {[
               { id: "nozzle_temperature", label: "Temp" },
               { id: "print_speed", label: "SPEED" },
@@ -130,9 +152,9 @@ export default function App() {
               const v = varById.get(id);
               return (
                 <div key={id} className="p-1 flex flex-col">
-                  <span className="text-[15px] opacity-90 uppercase font-bold">{label}</span>
+                  <span className="text-[10px] opacity-60 uppercase font-bold">{label}</span>
                   <select
-                    className="bg-transparent border-none text-white focus:outline-none cursor-pointer text-[13px] font-mono w-full"
+                    className="bg-transparent border-none text-white focus:outline-none cursor-pointer text-[14px] font-mono w-full"
                     style={{ borderBottom: '1px solid rgba(255,255,255,0.2)' }}
                     value={selected[id]}
                     onChange={(e) => setSelected(prev => ({ ...prev, [id]: e.target.value }))}
@@ -150,20 +172,45 @@ export default function App() {
         {/* Central Dial Area */}
         <div className="central-dial-area">
           <svg viewBox="0 0 180 200" className="w-full h-full">
-            {/* Gauge Background Arc */}
+            {/* Gauge Background Zones */}
+            {/* Green Zone (0-3) */}
             <path
               d="M 40 150 A 80 80 0 1 1 160 150"
               fill="none"
-              stroke="rgba(34, 43, 44, 0.75)"
+              stroke="#228b22"
               strokeWidth="12"
+              strokeDasharray="92.1 307.2"
+              strokeDashoffset="0"
+              opacity="0.2"
               strokeLinecap="round"
             />
+            {/* Yellow Zone (3-5) */}
+            <path
+              d="M 40 150 A 80 80 0 1 1 160 150"
+              fill="none"
+              stroke="#b87333"
+              strokeWidth="12"
+              strokeDasharray="61.4 307.2"
+              strokeDashoffset="-92.1"
+              opacity="0.2"
+            />
+            {/* Red Zone (5-10) */}
+            <path
+              d="M 40 150 A 80 80 0 1 1 160 150"
+              fill="none"
+              stroke="#8b0000"
+              strokeWidth="12"
+              strokeDasharray="153.7 307.2"
+              strokeDashoffset="-153.5"
+              strokeLinecap="round"
+              opacity="0.2"
+            />
             
-            {/* Colored Risk Arc */}
+            {/* Colored Risk Arc (Active) */}
             <motion.path
               d="M 40 150 A 80 80 0 1 1 160 150"
               fill="none"
-              stroke={total > 7 ? "#8b0000" : total > 4 ? "#b87333" : "#228b22"}
+              stroke={total > 5 ? "#ff4444" : total > 3 ? "#ffcc00" : "#44ff44"}
               strokeWidth="10"
               strokeLinecap="round"
               initial={{ pathLength: 0 }}
@@ -191,29 +238,36 @@ export default function App() {
             })}
 
             {/* Needle */}
-            <motion.g
-              initial={{ rotate: -110 }}
-              animate={{ rotate: (total / 10) * 220 - 110 }}
-              transition={{ type: "spring", stiffness: 50, damping: 15 }}
-              style={{ originX: "100px", originY: "100px" }}
-            >
-              <line
-                x1="100" y1="100" x2="100" y2="35"
+            <g>
+              <motion.line
+                x1="100" y1="100" 
+                x2={needleX2} 
+                y2={needleY2}
                 stroke="red"
                 strokeWidth="3"
                 strokeLinecap="round"
               />
               <circle cx="100" cy="100" r="5" fill="var(--dark-copper)" />
-            </motion.g>
+            </g>
 
             {/* Central Hub (Circle showing number) */}
-            <circle cx="100" cy="100" r="28" fill="var(--parchment)" stroke="var(--dark-copper)" strokeWidth="2" />
+            <motion.circle 
+              cx="100" 
+              cy="100" 
+              r="28" 
+              animate={{ 
+                fill: total > 5 ? "#8b0000" : total > 3 ? "#b87333" : "#228b22" 
+              }}
+              stroke="var(--dark-copper)" 
+              strokeWidth="2" 
+              transition={{ duration: 0.5 }}
+            />
             <text
               x="100"
               y="105"
               textAnchor="middle"
               className="risk-value-small"
-              fill="var(--ink)"
+              fill="white"
             >
               {total.toFixed(1)}
             </text>
