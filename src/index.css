@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Special+Elite&family=UnifrakturMaguntia&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "IM Fell English", serif;
+  --font-mono: "Special Elite", monospace;
+  --font-display: "UnifrakturMaguntia", cursive;
+}
+
+:root {
+  --copper: #b87333;
+  --dark-copper: #5d3a1a;
+  --brass: #d4af37;
+  --iron: #2b2b2b;
+  --parchment: #f4e4bc;
+  --ink: #2c1e16;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  overflow: hidden;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+}
+
+.steampunk-interface {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1100px;
+  background-image: url('background2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Book Triggers (Left) */
+.book-trigger {
+  position: absolute;
+  cursor: pointer;
+  margin-left:45px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  border-radius: 5px;
+}
+
+.book-1{
+  margin-top:20px;
+}
+.book-3{
+  margin-top:-20px;
+}
+.book-trigger:hover {
+  transform: scale(1.02) translateX(5px);
+  background:transparent;
+}
+
+.book-1 { top: 3.5%; left: 1.5%; width: 11.5%; height: 21%; }
+.book-2 { top: 31%; left: 1.5%; width: 11.5%; height: 21%; }
+.book-3 { top: 58.5%; left: 1.5%; width: 11.5%; height: 21%; }
+
+/* Top Screen Area (Quick Settings) */
+.top-screen-area {
+  position: absolute;
+  top: 1%;
+  left: 21%;
+  width: 57%;
+  height: 23%;
+  padding: 20px;
+  overflow-y: auto;
+  color: #3d2b1f;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Central Dial Area */
+.central-dial-area {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: 18.4%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--dark-copper);
+  pointer-events: none;
+}
+
+.risk-value-small {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.risk-label-gauge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: -40px;
+  margin-left: 14px;
+
+  color: white;
+}
+
+/* Bottom Log Area */
+.bottom-log-area {
+  position: absolute;
+  top: 70.5%;
+  left: 28.5%;
+  width: 46%;
+  height: 24.5%;
+  padding: 20px 30px;
+  overflow-y: auto;
+  color: #2a1b0e;
+  font-family: var(--font-serif);
+  line-height: 1.4;
+}
+
+/* Failure Mode Buttons (Right) */
+.fm-buttons-container {
+  position: absolute;
+  top: 27%;
+  right: 2%;
+  width: 15.5%;
+  height: 68%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.fm-btn-overlay {
+  height: 15.3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+
+}
+
+.fm-btn-score {
+  font-weight:bolder;
+  color: rgb(255, 217, 0);
+}
+
+/* Parchment Modal */
+.parchment-modal {
+  position: fixed;
+  top: 5%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+
+  max-width: 1000px;
+  background: var(--parchment);
+  padding: 30px 40px;
+  box-shadow: 0 0 100px rgba(0,0,0,0.9), 0 0 0 8px var(--dark-copper);
+  z-index: 1000;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+}
+
+.parchment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid rgba(44, 30, 22, 0.2);
+  padding-bottom: 15px;
+}
+
+.parchment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 30px;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.form-select {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--ink);
+  padding: 8px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  background: rgba(0,0,0,0.05);
+}
+
+/* Animations */
+@keyframes flicker {
+  0% { opacity: 0.8; }
+  5% { opacity: 0.9; }
+  10% { opacity: 0.7; }
+  15% { opacity: 1; }
+  25% { opacity: 0.8; }
+  30% { opacity: 1; }
+  70% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+.flicker {
+  animation: flicker 5s infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--dark-copper);
+  border-radius: 3px;
+}

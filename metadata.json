@@ -1,0 +1,5 @@
+{
+  "name": "Steampunk 3D Print Risk Engine",
+  "description": "A predictive tool for 3D printing failures with a steampunk aesthetic, calculating risk based on hardware, slicer, and environmental variables.",
+  "requestFramePermissions": []
+}
