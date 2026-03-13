@@ -175,7 +175,7 @@ export default function App() {
             {/* Gauge Background Zones */}
             {/* Green Zone (0-3) */}
             <path
-              d="M 40 150 A 80 80 0 1 1 160 150"
+              d="M 40 150 A 80 80 0 1 1 160 160"
               fill="none"
               stroke="#228b22"
               strokeWidth="12"
@@ -295,8 +295,9 @@ export default function App() {
 
         {/* Failure Mode Buttons (Right) */}
         <div className="fm-buttons-container">
+          <div className="fm-title">Failure Modes</div>
           {FAILURE_MODES.map((fm, i) => (
-            <div key={fm} className="fm-btn-overlay flicker" style={{ animationDelay: `${i * 0.3}s` }}>
+              <div key={fm} className={`fm-btn-overlay fm-item-${i} flicker`} style={{ animationDelay: `${i * 0.3}s` }}>
               <span className="flex-1 leading-tight mr-2">{fm}</span>
               <span className="fm-btn-score shrink-0">{perFailureMode[i].toFixed(1)}</span>
             </div>
